@@ -9,7 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       userId: {
-        allowNull: false,
+        // allowNull: false,
+        defaultValue: null,
         type: Sequelize.INTEGER,
         references: {
           model: "Users",
@@ -17,7 +18,8 @@ module.exports = {
         },
       },
       countryId: {
-        allowNull: false,
+        // allowNull: false,
+        defaultValue: null,
         type: Sequelize.INTEGER,
         references: {
           model: "Countries",

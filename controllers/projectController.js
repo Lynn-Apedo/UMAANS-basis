@@ -1,13 +1,12 @@
 const models = require("../models");
 
-const { Project, Country } = models;
+const { Project } = models;
 
 module.exports = {
   addProject: async (data) => {
     const {
-      countryId,
-      userId,
-      bookmarkId,
+      //   countryId,
+      //   userId,
       architect,
       size,
       year,
@@ -17,9 +16,8 @@ module.exports = {
       mainPicture,
     } = data;
     return await Project.create({
-      countryId,
-      userId,
-      bookmarkId,
+      //   countryId,
+      //   userId,
       architect,
       size,
       year,
