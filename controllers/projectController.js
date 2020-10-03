@@ -30,12 +30,44 @@ module.exports = {
   },
   getAllProjects: () => {
     return Project.findAll({
-      // include: [
-      //   {
-      //     model: Country,
-      //     attributes: ["name"],
-      //   },
-      // ],
+      include: [
+        {
+          model: Country,
+          attributes: ["countryName"],
+        },
+      ],
+      order: [["id", "DESC"]],
+      limit: 10,
+      raw: true,
+      attributes: [
+        "id",
+        "userId",
+        "countryId",
+        "architect",
+        "size",
+        "year",
+        "category",
+        "title",
+        "projectDescr",
+        "mainPicture",
+      ],
+    });
+  },
+  getProjectById: (projectId) => {
+    return Project.findByPk(projectId, {
+      include: [
+        {
+          model: Country,
+          attributes: ["countryName"],
+        },
+      ],
+    });
+  },
+  deleteProjectById: (id) => {
+    return Project.destroy({
+      where: {
+        id,
+      },
     });
   },
 };

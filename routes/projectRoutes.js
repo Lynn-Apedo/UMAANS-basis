@@ -7,18 +7,23 @@ const authMiddleware = require("../utils/jwt");
 const projectController = require("../controllers/projectController");
 
 router.get("/projects", async (req, res) => {
-  // res.send("hello there");
   const projectFound = await projectController.getAllProjects(req.body);
+  console.log("projectFound 1", projectFound);
   if (projectFound) {
     res.status(200).json({
-      id: projectFound.id,
-      architect: projectFound.architect,
-      size: projectFound.size,
-      year: projectFound.year,
-      category: projectFound.category,
-      title: projectFound.title,
-      projectDescr: projectFound.projectDescr,
-      mainPicture: projectFound.mainPicture,
+      projectFound,
+    });
+  }
+});
+
+router.get("/projects/:projectId", async (req, res) => {
+  const projectFound = await projectController.getProjectById(
+    req.params.projectId
+  );
+  console.log("projectFound 2", projectFound);
+  if (projectFound) {
+    res.status(200).json({
+      projectFound,
     });
   }
 });
@@ -46,6 +51,23 @@ router.post("/projects", authMiddleware.authenticateJWT, async (req, res) => {
     projectDescr: newProject.projectDescr,
     mainPicture: newProject.mainPicture,
   });
+});
+
+router.delete("/project/:projectId", async (req, res) => {
+  const projectFound = await projectController.deleteProjectById(
+    req.params.projectId
+  );
+  console.log("projectFound", projectFound);
+  if (projectFound) {
+    res.status(200).json({
+      message: "Projet supprimé",
+    });
+  } else {
+    return res.status(404).json({
+      error:
+        " Ce projet n'a pas été supprimé correctement OU il n'existe pas ??",
+    });
+  }
 });
 
 module.exports = router;
