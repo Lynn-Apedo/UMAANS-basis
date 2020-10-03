@@ -5,6 +5,7 @@ const router = express.Router();
 
 const authMiddleware = require("../utils/jwt");
 const projectController = require("../controllers/projectController");
+const countryController = require("../controllers/countryController");
 
 router.get("/projects", async (req, res) => {
   const projectFound = await projectController.getAllProjects(req.body);
@@ -53,7 +54,7 @@ router.post("/projects", authMiddleware.authenticateJWT, async (req, res) => {
   });
 });
 
-router.delete("/project/:projectId", async (req, res) => {
+router.delete("/projects/:projectId", async (req, res) => {
   const projectFound = await projectController.deleteProjectById(
     req.params.projectId
   );
