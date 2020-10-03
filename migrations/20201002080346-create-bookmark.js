@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Projects", {
+    await queryInterface.createTable("Bookmarks", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,40 +17,16 @@ module.exports = {
           key: "id",
         },
       },
-      countryId: {
+      projectId: {
         // allowNull: false,
         defaultValue: null,
         type: Sequelize.INTEGER,
         references: {
-          model: "Countries",
+          model: "Projects",
           key: "id",
         },
       },
-      architect: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      size: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      year: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      category: {
-        type: Sequelize.STRING,
-      },
-      title: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      projectDescr: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      mainPicture: {
-        allowNull: false,
+      bookmarkName: {
         type: Sequelize.STRING,
       },
       createdAt: {
@@ -64,6 +40,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Projects");
+    await queryInterface.dropTable("Bookmarks");
   },
 };

@@ -1,12 +1,13 @@
 const models = require("../models");
+const user = require("../models/user");
 
-const { Project } = models;
+const { Project, Country } = models;
 
 module.exports = {
   addProject: async (data) => {
     const {
-      //   countryId,
-      //   userId,
+      userId,
+      countryId,
       architect,
       size,
       year,
@@ -16,8 +17,8 @@ module.exports = {
       mainPicture,
     } = data;
     return await Project.create({
-      //   countryId,
-      //   userId,
+      userId,
+      countryId,
       architect,
       size,
       year,
@@ -29,12 +30,12 @@ module.exports = {
   },
   getAllProjects: () => {
     return Project.findAll({
-      include: [
-        {
-          model: Country,
-          attributes: ["name"],
-        },
-      ],
+      // include: [
+      //   {
+      //     model: Country,
+      //     attributes: ["name"],
+      //   },
+      // ],
     });
   },
 };

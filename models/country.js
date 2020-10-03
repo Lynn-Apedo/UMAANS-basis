@@ -4,12 +4,13 @@ module.exports = (sequelize, DataTypes) => {
   class Country extends Model {
     static associate(models) {
       this.hasMany(models.Project, {
-        foreignKey: "projectId",
+        foreignKey: "countryId",
       });
     }
   }
   Country.init(
     {
+      projectId: DataTypes.INTEGER,
       countryName: DataTypes.STRING,
     },
     {

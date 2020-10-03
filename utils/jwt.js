@@ -19,9 +19,12 @@ module.exports = {
     );
   },
   authenticateJWT: (req, res, next) => {
-    const authHeader = req.header.authorization;
+    const authHeader = req.headers.authorization;
+    console.log("authHeader", authHeader);
+
     if (authHeader) {
       const token = authHeader.split(" ")[1];
+      console.log("token", token);
       jwt.verify(token, JWT_SIGN_SECRET, (err, user) => {
         if (err) {
           //   console.log("this is err", err);
