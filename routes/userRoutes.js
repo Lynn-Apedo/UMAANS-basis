@@ -78,6 +78,15 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+router.put("/edituser/:userId", async (req, res) => {
+  const data = req.body;
+  const userUpdate = await userController.updateUserById(
+    req.params.userId,
+    data
+  );
+  res.status(200).json({ project: userUpdate });
+});
+
 router.delete("/user/:userId", async (req, res) => {
   const userFound = await userController.deleteUserById(req.params.userId);
   if (userFound) {

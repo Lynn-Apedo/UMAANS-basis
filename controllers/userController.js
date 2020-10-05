@@ -36,6 +36,14 @@ module.exports = {
   checkPassword: (password, userPassword) => {
     return bcrypt.compare(password, userPassword);
   },
+  updateUserById: async (id, data) => {
+    const userUpdate = await User.update(data, { where: { id } });
+    if (userUpdate) {
+      return await User.findOne({
+        where: { id },
+      });
+    }
+  },
   deleteUserById: (id) => {
     return User.destroy({
       where: {
