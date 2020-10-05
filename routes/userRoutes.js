@@ -12,16 +12,21 @@ router.get("/user", (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  const { firstName, email } = req.body;
+  const { pseudo, email } = req.body;
   const userFound = await userController.checkEmail(email);
-  if (firstName === null || firstName === undefined || firstName === "") {
+  if (pseudo === null || pseudo === undefined || pseudo === "") {
     return res.status(400).json({
-      error: "Le champ firstName n'est pas renseigné",
+      error: "Le champ pseudo n'est pas renseigné",
     });
   }
-  if (typeof firstName !== "string") {
+  if (email === null || email === undefined || email === "") {
     return res.status(400).json({
-      error: "Le champ firstName doit être une chaîne de caractères",
+      error: "Le champ email n'est pas renseigné",
+    });
+  }
+  if (typeof pseudo !== "string") {
+    return res.status(400).json({
+      error: "Le champ pseudo doit être une chaîne de caractères",
     });
   }
   if (!userFound) {
@@ -69,6 +74,19 @@ router.post("/signin", async (req, res) => {
   } else {
     return res.status(401).json({
       error: "Votre compte n'existe pas",
+    });
+  }
+});
+
+router.delete("/user/:userId", async (req, res) => {
+  const userFound = await userController.deleteUserById(req.params.userId);
+  if (userFound) {
+    res.status(200).json({
+      message: "Utilisateur supprimé",
+    });
+  } else {
+    return res.status(404).json({
+      error: "Cet utilisateur n'a pas été supprimé",
     });
   }
 });

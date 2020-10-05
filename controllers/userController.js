@@ -36,4 +36,11 @@ module.exports = {
   checkPassword: (password, userPassword) => {
     return bcrypt.compare(password, userPassword);
   },
+  deleteUserById: (id) => {
+    return User.destroy({
+      where: {
+        id,
+      },
+    });
+  },
 };
