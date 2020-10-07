@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Country, {
         foreignKey: "countryId",
       });
+      this.belongsTo(models.Category, {
+        foreignKey: "categoryId",
+      });
       this.hasMany(models.Bookmark, {
         foreignKey: "projectId",
       });
@@ -18,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       userId: DataTypes.INTEGER,
       countryId: DataTypes.INTEGER,
+      categoryId: DataTypes.INTEGER,
 
       architect: DataTypes.STRING,
       size: DataTypes.INTEGER,
       year: DataTypes.INTEGER,
-      category: DataTypes.STRING,
       title: DataTypes.STRING,
       projectDescr: DataTypes.STRING,
       mainPicture: DataTypes.STRING,
