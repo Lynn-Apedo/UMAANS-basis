@@ -47,13 +47,16 @@ router.post("/projects", authMiddleware.authenticateJWT, async (req, res) => {
   console.log("req.body", req.body);
   console.log("req.body.countryId", req.body.countryId);
 
-  const newProject = await projectController.addProject(req.body);
+  const newProject = await projectController.addProject(
+    req.body,
+    req.user.userID
+  );
   res.status(201).json({
     id: newProject.id,
     architect: newProject.architect,
     size: newProject.size,
     year: newProject.year,
-    category: newProject.category,
+    // category: newProject.category,
     title: newProject.title,
     projectDescr: newProject.projectDescr,
     mainPicture: newProject.mainPicture,

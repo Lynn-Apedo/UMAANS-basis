@@ -4,14 +4,14 @@ const user = require("../models/user");
 const { Project, Country } = models;
 
 module.exports = {
-  addProject: async (data) => {
+  addProject: async (data, userId) => {
     const {
-      userId,
       countryId,
+      categoryId,
       architect,
       size,
       year,
-      category,
+      // category,
       title,
       projectDescr,
       mainPicture,
@@ -19,10 +19,11 @@ module.exports = {
     return await Project.create({
       userId,
       countryId,
+      categoryId,
       architect,
       size,
       year,
-      category,
+      // category,
       title,
       projectDescr,
       mainPicture,
@@ -43,10 +44,11 @@ module.exports = {
         "id",
         "userId",
         "countryId",
+        "categoryId",
         "architect",
         "size",
         "year",
-        "category",
+        // "category",
         "title",
         "projectDescr",
         "mainPicture",

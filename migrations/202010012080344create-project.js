@@ -21,21 +21,20 @@ module.exports = {
         // allowNull: false,
         defaultValue: null,
         type: Sequelize.INTEGER,
-        // references: {
-        //   model: "Countries",
-        //   key: "id",
-        // },
+        references: {
+          model: "Countries",
+          key: "id",
+        },
       },
-      // bookmarkId: {
-      //   allowNull: false,
-      //   // defaultValue: null,
-      //   type: Sequelize.INTEGER,
-      //   references: {
-      //     model: "Bookmark",
-      //     key: "id",
-      //   },
-      // },
-
+      categoryId: {
+        // allowNull: false,
+        defaultValue: null,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Categories",
+          key: "id",
+        },
+      },
       architect: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -48,9 +47,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      category: {
-        type: Sequelize.STRING,
-      },
+      // category: {
+      //   allowNull: false,
+      //   type: Sequelize.STRING,
+      // },
       title: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -71,6 +71,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      // bookmarkId: {
+      //   allowNull: false,
+      //   // defaultValue: null,
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: "Bookmark",
+      //     key: "id",
+      //   },
+      // },
     });
   },
   down: async (queryInterface, Sequelize) => {
