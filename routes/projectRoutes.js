@@ -11,6 +11,8 @@ const router = express.Router();
 const authMiddleware = require("../utils/jwt");
 const projectController = require("../controllers/projectController");
 const countryController = require("../controllers/countryController");
+const upload = require("../middleware/upload");
+const { req } = require("express");
 
 router.get("/projects", async (req, res) => {
   const projectFound = await projectController.getAllProjects(req.body);
@@ -34,34 +36,49 @@ router.get("/projects/:projectId", async (req, res) => {
   }
 });
 
-router.post("/projects", authMiddleware.authenticateJWT, async (req, res) => {
-  const { userRole } = req.user;
-  console.log("userRole", userRole);
-  if (userRole !== true) {
-    return res.status(403).json({
-      message: "TEST Vous n'êtes pas autorisé à poster de projet",
+router.post(
+  "/projects",
+  authMiddleware.authenticateJWT,
+  upload,
+  async (req, res) => {
+    const { userRole } = req.user;
+    console.log("userRole", userRole);
+
+    const host = req.get("host");
+    console.log("req.get", req.get);
+    console.log("host", host);
+    console.log("req.file ======> ", req.file);
+    const projectAdded = {
+      ...req.body,
+      mainPicture: `${req.protocol}://${host}/upload/${req.file.filename}`,
+    };
+    if (userRole !== true) {
+      return res.status(403).json({
+        message: "TEST Vous n'êtes pas autorisé à poster de projet",
+      });
+    }
+    // console.log("req.user isPro", req.user);
+    console.log("req.user", req.user);
+    console.log("req.body", req.body);
+    console.log("req.body.countryId", req.body.countryId);
+
+    const newProject = await projectController.addProject(
+      projectAdded,
+      req.user.userID
+    );
+
+    res.status(201).json({
+      id: newProject.id,
+      architect: newProject.architect,
+      size: newProject.size,
+      year: newProject.year,
+      // category: newProject.category,
+      title: newProject.title,
+      projectDescr: newProject.projectDescr,
+      mainPicture: newProject.mainPicture,
     });
   }
-  // console.log("req.user isPro", req.user);
-  console.log("req.user", req.user);
-  console.log("req.body", req.body);
-  console.log("req.body.countryId", req.body.countryId);
-
-  const newProject = await projectController.addProject(
-    req.body,
-    req.user.userID
-  );
-  res.status(201).json({
-    id: newProject.id,
-    architect: newProject.architect,
-    size: newProject.size,
-    year: newProject.year,
-    // category: newProject.category,
-    title: newProject.title,
-    projectDescr: newProject.projectDescr,
-    mainPicture: newProject.mainPicture,
-  });
-});
+);
 
 router.delete("/projects/:projectId", async (req, res) => {
   const projectFound = await projectController.deleteProjectById(

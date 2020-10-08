@@ -60,7 +60,8 @@ module.exports = {
         type: Sequelize.STRING,
       },
       mainPicture: {
-        allowNull: false,
+        // allowNull: false,
+        defaultValue: null,
         type: Sequelize.STRING,
       },
       createdAt: {
