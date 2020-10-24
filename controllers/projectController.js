@@ -1,7 +1,7 @@
 const models = require("../models");
 const user = require("../models/user");
 
-const { Project, Country } = models;
+const { Project, Country, Category } = models;
 
 module.exports = {
   addProject: async (data, userId) => {
@@ -34,7 +34,12 @@ module.exports = {
           model: Country,
           attributes: ["countryName"],
         },
+        {
+          model: Category,
+          attributes: ["categoryName"],
+        },
       ],
+
       order: [["id", "DESC"]],
       limit: 10,
       raw: true,
@@ -59,6 +64,10 @@ module.exports = {
         {
           model: Country,
           attributes: ["countryName"],
+        },
+        {
+          model: Category,
+          attributes: ["categoryName"],
         },
       ],
     });

@@ -6,10 +6,11 @@ const { User } = models;
 
 module.exports = {
   addUser: async (data) => {
-    const { firstName, lastName, email, password, pseudo, isPro } = data;
+    const { id, firstName, lastName, email, password, pseudo, isPro } = data;
     const bcryptHash = await bcrypt.hash(password, 5);
 
     return User.create({
+      id,
       firstName,
       lastName,
       email,
@@ -25,6 +26,9 @@ module.exports = {
         email,
       },
     });
+  },
+  getUserById: (userId) => {
+    return User.findByPk(userId);
   },
   getUserByEmail: (email) => {
     return User.findOne({

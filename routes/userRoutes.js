@@ -2,14 +2,28 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const router = express.Router();
+const authMiddleware = require("../utils/jwt");
 
 const userController = require("../controllers/userController");
 const jwtUtils = require("../utils/jwt");
 
-router.get("/user", (req, res) => {
-  //   console.log("req de user", req);
-  res.send("User Info");
-});
+router.get(
+  "/user/:userId",
+  authMiddleware.authenticateJWT,
+  async (req, res) => {
+    //   console.log("req de user", req);
+    // res.send("User Info");
+    const userFound = await userController.getUserById(req.user.userID);
+    console.log("userFound1", userFound);
+
+    if (userFound) {
+      console.log("userFound2", userFound);
+      res.status(200).json({
+        userFound,
+      });
+    }
+  }
+);
 
 router.post("/signup", async (req, res) => {
   const { pseudo, email } = req.body;
@@ -32,6 +46,7 @@ router.post("/signup", async (req, res) => {
   if (!userFound) {
     const newUser = await userController.addUser(req.body);
     return res.status(201).json({
+      id: newUser.id,
       firstName: newUser.firstName,
       lastName: newUser.lastName,
       email: newUser.email,
@@ -59,6 +74,7 @@ router.post("/signin", async (req, res) => {
       res.status(200).json({
         token: jwtUtils.generateTokenForUser(userFound),
         user: {
+          id: userFound.id,
           firstName: userFound.firstName,
           lastName: userFound.lastName,
           email: userFound.email,
