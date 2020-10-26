@@ -5,6 +5,7 @@ const router = express.Router();
 const usersRoutes = require("./userRoutes");
 const projectRoutes = require("./projectRoutes");
 const bookmarkRoutes = require("./bookmarkRoutes");
+const NotFoundError = require("../utils/errors/not_found_404_error");
 
 router.use(usersRoutes);
 router.use(projectRoutes);
@@ -15,9 +16,10 @@ router.get("/", (req, res) => {
 });
 
 router.get("*", (req, res) => {
-  res.status(404).json({
-    error: "Oups ! Erreur 404!",
-  });
+  throw new NotFoundError(
+    "Mauvaise requête - erreur client",
+    "Oups ! Erreur 404!"
+  );
 });
 
 module.exports = router;

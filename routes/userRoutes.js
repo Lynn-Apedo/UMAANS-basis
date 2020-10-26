@@ -6,7 +6,9 @@ const authMiddleware = require("../utils/jwt");
 
 const userController = require("../controllers/userController");
 const jwtUtils = require("../utils/jwt");
-
+const BadRequestError = require("../utils/errors/bad_request_400_error");
+const UnauthorizedError = require("../utils/errors/unauthorized_401_error");
+const NotFoundError = require("../utils/errors/not_found_404_error");
 router.get(
   "/user/:userId",
   authMiddleware.authenticateJWT,
@@ -29,19 +31,22 @@ router.post("/signup", async (req, res) => {
   const { pseudo, email } = req.body;
   const userFound = await userController.checkEmail(email);
   if (pseudo === null || pseudo === undefined || pseudo === "") {
-    return res.status(400).json({
-      error: "Le champ pseudo n'est pas renseigné",
-    });
+    throw new BadRequestError(
+      "Mauvaise requête - erreur client",
+      "Le champ pseudo n'est pas renseigné"
+    );
   }
   if (email === null || email === undefined || email === "") {
-    return res.status(400).json({
-      error: "Le champ email n'est pas renseigné",
-    });
+    throw new BadRequestError(
+      "Mauvaise requête - erreur client",
+      "Le champ email n'est pas renseigné"
+    );
   }
   if (typeof pseudo !== "string") {
-    return res.status(400).json({
-      error: "Le champ pseudo doit être une chaîne de caractères",
-    });
+    throw new BadRequestError(
+      "Mauvaise requête - erreur client",
+      "Le champ pseudo doit être une chaîne de caractères"
+    );
   }
   if (!userFound) {
     const newUser = await userController.addUser(req.body);
@@ -55,9 +60,10 @@ router.post("/signup", async (req, res) => {
     });
   } else {
     // res.send("it's not working, there is already someone using this email");
-    return res.status(409).json({
-      error: "Cette adresse email est déjà enregistré",
-    });
+    throw new UnauthorizedError(
+      "Mauvaise requête - erreur client",
+      "Cette adresse email est déjà utilisé"
+    );
   }
 });
 
@@ -83,14 +89,16 @@ router.post("/signin", async (req, res) => {
         },
       });
     } else {
-      return res.status(401).json({
-        error: "Votre mot de passe n'est pas correct",
-      });
+      throw new UnauthorizedError(
+        "Mauvaise requête - erreur client",
+        "Votre mot de passe n'est pas correct"
+      );
     }
   } else {
-    return res.status(401).json({
-      error: "Votre compte n'existe pas",
-    });
+    throw new UnauthorizedError(
+      "Mauvaise requête - erreur client",
+      "Votre compte n'existe pas"
+    );
   }
 });
 
@@ -110,9 +118,28 @@ router.delete("/user/:userId", async (req, res) => {
       message: "Utilisateur supprimé",
     });
   } else {
-    return res.status(404).json({
-      error: "Cet utilisateur n'a pas été supprimé",
-    });
+    throw new NotFoundError(
+      "Mauvaise requête - erreur client",
+      "Cet utilisateur n'a pas été supprimé"
+    );
   }
 });
+
+router.get(
+  "/getprofil/:userId",
+  authMiddleware.authenticateJWT,
+  async (req, res) => {
+    //   console.log("req de user", req);
+    // res.send("User Info");
+    const userFound = await userController.getUserById(req.user.userID);
+    console.log("userFound1", userFound);
+
+    if (userFound) {
+      console.log("userFound2", userFound);
+      res.status(200).json({
+        userFound,
+      });
+    }
+  }
+);
 module.exports = router;

@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 
 const models = require("../models");
 
-const { User } = models;
+const { User, Project } = models;
 
 module.exports = {
   addUser: async (data) => {
@@ -28,7 +28,24 @@ module.exports = {
     });
   },
   getUserById: (userId) => {
-    return User.findByPk(userId);
+    return User.findByPk(userId, {
+      include: [
+        {
+          model: Project,
+          attributes: [
+            "userId",
+            "countryId",
+            "categoryId",
+            "architect",
+            "size",
+            "year",
+            "title",
+            "projectDescr",
+            "mainPicture",
+          ],
+        },
+      ],
+    });
   },
   getUserByEmail: (email) => {
     return User.findOne({

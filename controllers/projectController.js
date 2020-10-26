@@ -1,7 +1,7 @@
 const models = require("../models");
 const user = require("../models/user");
 
-const { Project, Country, Category } = models;
+const { Project, Country, Category, User } = models;
 
 module.exports = {
   addProject: async (data, userId) => {
@@ -72,6 +72,26 @@ module.exports = {
       ],
     });
   },
+
+  getProjectByUserId: async (userId) => {
+    const currentUser = User.findByPk(userId);
+    console.log("currentUser****", currentUser);
+
+    return await Project.findAll({
+      include: [
+        {
+          model: Country,
+          attributes: ["countryName"],
+        },
+        {
+          model: Category,
+          attributes: ["categoryName"],
+        },
+      ],
+      where: { userId: 1 },
+    });
+  },
+
   updateProjectById: async (id, data) => {
     const projectUpdate = await Project.update(data, { where: { id } });
     if (projectUpdate) {

@@ -37,14 +37,17 @@ module.exports = {
       },
       architect: {
         allowNull: false,
+        // defaultValue: null,
         type: Sequelize.STRING,
       },
       size: {
         allowNull: false,
+        // defaultValue: null,
         type: Sequelize.INTEGER,
       },
       year: {
         allowNull: false,
+        // defaultValue: null,
         type: Sequelize.INTEGER,
       },
       // category: {
@@ -53,15 +56,17 @@ module.exports = {
       // },
       title: {
         allowNull: false,
+        // defaultValue: null,
         type: Sequelize.STRING,
       },
       projectDescr: {
         allowNull: false,
+        // defaultValue: null,
         type: Sequelize.STRING,
       },
       mainPicture: {
-        // allowNull: false,
-        defaultValue: null,
+        allowNull: false,
+        // defaultValue: null,
         type: Sequelize.STRING,
       },
       createdAt: {

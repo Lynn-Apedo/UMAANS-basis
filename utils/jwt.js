@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-
+const UnauthorizedError = require("../utils/errors/unauthorized_401_error");
+const ForbiddenError = require("../utils/errors/forbidden_403_error");
 const JWT_SIGN_SECRET =
   "9gMQj5wdpSfYwDBWji3wJoVcXwgEXvaBXc1FFBJiY2yXI9447gzTgCA-kyWOkGTVlEQUuVDqdeKJLLWuHpuU-0GY3SzqwrxxrvkIl8l84HKItZWRFA1UxHh7r7LaF7xUZ";
 
@@ -20,27 +21,33 @@ module.exports = {
   },
   authenticateJWT: (req, res, next) => {
     const authHeader = req.headers.authorization;
-    console.log("authHeader", authHeader);
+    console.log("JWT authHeader", authHeader);
 
     if (authHeader) {
-      console.log("***authHeader", authHeader);
+      console.log("JWT***authHeader", authHeader);
 
+      // const token = authHeader;
       const token = authHeader.split(" ")[1];
-      console.log('****authHeader.split(" ")[1]', authHeader.split(" ")[1]);
-      console.log("****token ", token);
+
+      console.log('JWT****authHeader.split(" ")[1]', authHeader.split(" ")[1]);
+      console.log("JWT****token ", token);
       jwt.verify(token, JWT_SIGN_SECRET, (err, user) => {
         if (err) {
           //   console.log("this is err", err);
-          return res.sendStatus(403);
+          throw new ForbiddenError(
+            "Mauvaise requête - erreur client",
+            "erreur token"
+          );
         }
-        console.log("user", user);
+        console.log("JWT user", user);
         req.user = user;
         next();
       });
     } else {
-      res.status(401).json({
-        error: "Vous devez être connecté pour accéder à cette ressource",
-      });
+      throw new UnauthorizedError(
+        "Mauvaise requête - erreur client",
+        "Vous devez être connecté pour accéder à cette ressource"
+      );
     }
   },
 };

@@ -5,6 +5,7 @@ const router = express.Router();
 
 const projectController = require("../controllers/projectController");
 const bookmarkController = require("../controllers/bookmarkController");
+const NotFoundError = require("../utils/errors/not_found_404_error");
 
 // router.get("/bookmarks", async (req, res) => {
 //   const bookmarktFound = await bookmarkController.getAllBookmarks(req.body);
@@ -39,10 +40,10 @@ router.delete("/bookmark/:projectId", async (req, res) => {
       message: "Bookmark supprimé",
     });
   } else {
-    return res.status(404).json({
-      error:
-        " Ce bookmark n'a pas été supprimé correctement OU il n'existe pas ??",
-    });
+    throw new NotFoundError(
+      "Mauvaise requête - erreur client",
+      "Ce bookmark n'a pas été supprimé correctement"
+    );
   }
 });
 

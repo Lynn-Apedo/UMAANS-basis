@@ -4,7 +4,11 @@ module.exports = (sequelize, DataTypes) => {
   class Bookmark extends Model {
     static associate(models) {
       this.belongsTo(models.User, {
-        foreignKey: "userId",
+        foreignKey: {
+          foreignKey: "userId",
+          onDelete: "cascade",
+          hooks: true,
+        },
       });
       this.belongsTo(models.Project, {
         foreignKey: "projectId",
