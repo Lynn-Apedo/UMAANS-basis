@@ -27,7 +27,7 @@ module.exports = {
       mainPicture,
     });
   },
-  getAllProjects: () => {
+  getAllProjects: (userId) => {
     return Project.findAll({
       include: [
         {
@@ -38,10 +38,13 @@ module.exports = {
           model: Category,
           attributes: ["categoryName"],
         },
+        {
+          model: User,
+          attributes: ["id"],
+        },
       ],
 
       order: [["id", "DESC"]],
-      limit: 10,
       raw: true,
       attributes: [
         "id",
@@ -51,7 +54,6 @@ module.exports = {
         "architect",
         "size",
         "year",
-        // "category",
         "title",
         "projectDescr",
         "mainPicture",
@@ -69,26 +71,11 @@ module.exports = {
           model: Category,
           attributes: ["categoryName"],
         },
-      ],
-    });
-  },
-
-  getProjectByUserId: async (userId) => {
-    const currentUser = User.findByPk(userId);
-    console.log("currentUser****", currentUser);
-
-    return await Project.findAll({
-      include: [
         {
-          model: Country,
-          attributes: ["countryName"],
-        },
-        {
-          model: Category,
-          attributes: ["categoryName"],
+          model: User,
+          attributes: ["id"],
         },
       ],
-      where: { userId: 1 },
     });
   },
 
@@ -106,6 +93,42 @@ module.exports = {
       where: {
         id,
       },
+    });
+  },
+
+  getAllProjectsById: (userId) => {
+    return Project.findAll({
+      include: [
+        {
+          model: Country,
+          attributes: ["countryName"],
+        },
+        {
+          model: Category,
+          attributes: ["categoryName"],
+        },
+        {
+          model: User,
+          attributes: ["id"],
+        },
+      ],
+
+      order: [["id", "DESC"]],
+      limit: 10,
+      raw: true,
+      attributes: [
+        "id",
+        "userId",
+        "countryId",
+        "categoryId",
+        "architect",
+        "size",
+        "year",
+        "title",
+        "projectDescr",
+        "mainPicture",
+      ],
+      where: { userId: userId },
     });
   },
 };

@@ -9,7 +9,6 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       userId: {
-        // allowNull: false,
         defaultValue: null,
         type: Sequelize.INTEGER,
         references: {
@@ -18,7 +17,6 @@ module.exports = {
         },
       },
       countryId: {
-        // allowNull: false,
         defaultValue: null,
         type: Sequelize.INTEGER,
         references: {
@@ -27,7 +25,6 @@ module.exports = {
         },
       },
       categoryId: {
-        // allowNull: false,
         defaultValue: null,
         type: Sequelize.INTEGER,
         references: {
@@ -37,36 +34,26 @@ module.exports = {
       },
       architect: {
         allowNull: false,
-        // defaultValue: null,
         type: Sequelize.STRING,
       },
       size: {
         allowNull: false,
-        // defaultValue: null,
         type: Sequelize.INTEGER,
       },
       year: {
         allowNull: false,
-        // defaultValue: null,
         type: Sequelize.INTEGER,
       },
-      // category: {
-      //   allowNull: false,
-      //   type: Sequelize.STRING,
-      // },
       title: {
         allowNull: false,
-        // defaultValue: null,
         type: Sequelize.STRING,
       },
       projectDescr: {
         allowNull: false,
-        // defaultValue: null,
         type: Sequelize.STRING,
       },
       mainPicture: {
         allowNull: false,
-        // defaultValue: null,
         type: Sequelize.STRING,
       },
       createdAt: {

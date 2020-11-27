@@ -1,25 +1,19 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-
 const router = express.Router();
-const authMiddleware = require("../utils/jwt");
 
+const authMiddleware = require("../utils/jwt");
 const userController = require("../controllers/userController");
 const jwtUtils = require("../utils/jwt");
-const BadRequestError = require("../utils/errors/bad_request_400_error");
-const UnauthorizedError = require("../utils/errors/unauthorized_401_error");
+const { BadRequestError, UnauthorizedError } = require("../utils/errors");
 const NotFoundError = require("../utils/errors/not_found_404_error");
+
 router.get(
   "/user/:userId",
   authMiddleware.authenticateJWT,
   async (req, res) => {
-    //   console.log("req de user", req);
-    // res.send("User Info");
     const userFound = await userController.getUserById(req.user.userID);
-    console.log("userFound1", userFound);
 
     if (userFound) {
-      console.log("userFound2", userFound);
       res.status(200).json({
         userFound,
       });
@@ -28,47 +22,77 @@ router.get(
 );
 
 router.post("/signup", async (req, res) => {
-  const { pseudo, email } = req.body;
-  const userFound = await userController.checkEmail(email);
-  if (pseudo === null || pseudo === undefined || pseudo === "") {
+  const { firstName, lastName, email, pseudo } = req.body;
+
+  if (firstName === null || firstName === undefined || firstName === "") {
     throw new BadRequestError(
       "Mauvaise requête - erreur client",
-      "Le champ pseudo n'est pas renseigné"
+      "Le champ prénom n'est pas renseigné"
     );
   }
+
+  if (lastName === null || lastName === undefined || lastName === "") {
+    throw new BadRequestError(
+      "Mauvaise requête - erreur client",
+      "Le champ nom n'est pas renseigné"
+    );
+  }
+
   if (email === null || email === undefined || email === "") {
     throw new BadRequestError(
       "Mauvaise requête - erreur client",
       "Le champ email n'est pas renseigné"
     );
   }
+
+  if (pseudo === null || pseudo === undefined || pseudo === "") {
+    throw new BadRequestError(
+      "Mauvaise requête - erreur client",
+      "Le champ pseudo n'est pas renseigné"
+    );
+  }
+
   if (typeof pseudo !== "string") {
     throw new BadRequestError(
       "Mauvaise requête - erreur client",
       "Le champ pseudo doit être une chaîne de caractères"
     );
   }
-  if (!userFound) {
-    const newUser = await userController.addUser(req.body);
-    return res.status(201).json({
-      id: newUser.id,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      email: newUser.email,
-      pseudo: newUser.pseudo,
-      isPro: newUser.isPro,
-    });
-  } else {
-    // res.send("it's not working, there is already someone using this email");
+  const userFound = await userController.checkEmail(email);
+
+  if (userFound) {
     throw new UnauthorizedError(
       "Mauvaise requête - erreur client",
       "Cette adresse email est déjà utilisé"
     );
   }
+  const newUser = await userController.addUser(req.body);
+  return res.status(201).json({
+    id: newUser.id,
+    firstName: newUser.firstName,
+    lastName: newUser.lastName,
+    email: newUser.email,
+    pseudo: newUser.pseudo,
+    isPro: newUser.isPro,
+  });
 });
 
 router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
+
+  if (email === null || email === undefined || email === "") {
+    throw new BadRequestError(
+      "Mauvaise requête - erreur client",
+      "Le champ email n'est pas renseigné"
+    );
+  }
+
+  if (password === null || password === undefined || password === "") {
+    throw new BadRequestError(
+      "Mauvaise requête - erreur client",
+      "Le champ pseudo n'est pas renseigné"
+    );
+  }
 
   const userFound = await userController.getUserByEmail(email);
   if (userFound) {
@@ -81,17 +105,12 @@ router.post("/signin", async (req, res) => {
         token: jwtUtils.generateTokenForUser(userFound),
         user: {
           id: userFound.id,
-          firstName: userFound.firstName,
-          lastName: userFound.lastName,
-          email: userFound.email,
-          pseudo: userFound.pseudo,
-          isPro: userFound.isPro,
         },
       });
     } else {
       throw new UnauthorizedError(
         "Mauvaise requête - erreur client",
-        "Votre mot de passe n'est pas correct"
+        "Email ou mot de passe incorrect"
       );
     }
   } else {
@@ -129,13 +148,9 @@ router.get(
   "/getprofil/:userId",
   authMiddleware.authenticateJWT,
   async (req, res) => {
-    //   console.log("req de user", req);
-    // res.send("User Info");
     const userFound = await userController.getUserById(req.user.userID);
-    console.log("userFound1", userFound);
 
     if (userFound) {
-      console.log("userFound2", userFound);
       res.status(200).json({
         userFound,
       });

@@ -9,7 +9,6 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       userId: {
-        // allowNull: false,
         defaultValue: null,
         type: Sequelize.INTEGER,
         references: {
@@ -18,7 +17,6 @@ module.exports = {
         },
       },
       projectId: {
-        // allowNull: false,
         defaultValue: null,
         type: Sequelize.INTEGER,
         references: {

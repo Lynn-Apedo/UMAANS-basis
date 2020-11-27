@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Category.init(
     {
-      // projectId: DataTypes.INTEGER,
       categoryName: DataTypes.STRING,
     },
     {

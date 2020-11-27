@@ -22,6 +22,7 @@ describe("user creation", () => {
 
       //when
       await userController.addUser(data);
+
       //then
       expect(createSub.calledOnce).to.be.true;
     });
