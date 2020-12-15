@@ -14,6 +14,7 @@ module.exports = {
       title,
       projectDescr,
       mainPicture,
+      link,
     } = data;
     return await Project.create({
       userId,
@@ -25,6 +26,7 @@ module.exports = {
       title,
       projectDescr,
       mainPicture,
+      link,
     });
   },
   getAllProjects: (userId) => {
@@ -57,6 +59,7 @@ module.exports = {
         "title",
         "projectDescr",
         "mainPicture",
+        "link",
       ],
     });
   },
@@ -127,6 +130,7 @@ module.exports = {
         "title",
         "projectDescr",
         "mainPicture",
+        "link",
       ],
       where: { userId: userId },
     });

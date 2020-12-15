@@ -44,6 +44,7 @@ module.exports = {
             "title",
             "projectDescr",
             "mainPicture",
+            "link",
           ],
         },
       ],

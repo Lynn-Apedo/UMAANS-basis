@@ -56,7 +56,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      // ajouter link
+      link: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

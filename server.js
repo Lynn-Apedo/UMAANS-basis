@@ -13,6 +13,7 @@ server.use(morgan("dev"));
 server.use("/", cors());
 
 server.use(bodyParser.json());
+server.use("/static", express.static("upload"));
 
 server.use("/api", routes);
 server.use("*", notFoundHandler);

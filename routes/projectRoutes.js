@@ -5,6 +5,8 @@ const authMiddleware = require("../utils/jwt");
 const projectController = require("../controllers/projectController");
 const ForbiddenError = require("../utils/errors/forbidden_403_error");
 
+const upload = require("../middleware/upload")
+
 router.get("/getprojects", async (req, res) => {
   const projectFound = await projectController.getAllProjects(
     req.params.userId
@@ -27,9 +29,9 @@ router.get("/projects/:projectId", async (req, res) => {
   }
 });
 
-router.post("/addproject", authMiddleware.authenticateJWT, async (req, res) => {
+router.post("/addproject", authMiddleware.authenticateJWT, upload, async (req, res) => {
   const { userRole } = req.user;
-  const { architect, size, year, title, projectDescr, mainPicture } = req.body;
+  const { architect, size, year, title, projectDescr, mainPicture, link } = req.body;
 
   if (userRole !== true) {
     throw new ForbiddenError(
@@ -79,12 +81,31 @@ router.post("/addproject", authMiddleware.authenticateJWT, async (req, res) => {
       "Le champ 'photo' n'est pas renseigné"
     );
   }
+  if (link === null || link === undefined || link === "") {
+    throw new BadRequestError(
+      "Mauvaise requête - erreur client",
+      "Le champ 'lien' n'est pas renseigné"
+    );
+  }
 
+  // const newProject = await projectController.addProject(
+  //   req.body,
+  //   req.user.userID
+  // );
+  if (
+    req.body.mainPicture == null ||
+    req.body.mainPicture == undefined ||
+    req.body.mainPicture == ""
+  ) {
+    req.body.mainPicture = req.body.mainPicture =
+      "http://localhost:2088/static/neo.png";
+  }
   const newProject = await projectController.addProject(
+    // projectAdded,
     req.body,
     req.user.userID
   );
-
+  console.log("okkkkkkkkkkkkkkkkkkkkkk");
   res.status(201).json({
     id: newProject.id,
     architect: newProject.architect,
@@ -93,8 +114,14 @@ router.post("/addproject", authMiddleware.authenticateJWT, async (req, res) => {
     title: newProject.title,
     projectDescr: newProject.projectDescr,
     mainPicture: newProject.mainPicture,
+    link: newProject.link,
   });
-});
+
+
+  
+  
+}
+);
 
 router.delete("/projects/:projectId", async (req, res) => {
   const project = await projectController.deleteProjectById(

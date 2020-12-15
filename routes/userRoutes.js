@@ -102,6 +102,7 @@ router.post("/signin", async (req, res) => {
     );
     if (isIdentified) {
       res.status(200).json({
+        firstName: userFound.firstName,
         token: jwtUtils.generateTokenForUser(userFound),
         user: {
           id: userFound.id,

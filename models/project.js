@@ -33,6 +33,8 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       projectDescr: DataTypes.STRING,
       mainPicture: DataTypes.STRING,
+      link: DataTypes.STRING,
+
     },
     {
       sequelize,
