@@ -22,7 +22,7 @@ router.get(
 );
 
 router.post("/signup", async (req, res) => {
-  const { firstName, lastName, email, pseudo } = req.body;
+  const { firstName, lastName, email,password, pseudo } = req.body;
 
   if (firstName === null || firstName === undefined || firstName === "") {
     throw new BadRequestError(
@@ -72,6 +72,7 @@ router.post("/signup", async (req, res) => {
     firstName: newUser.firstName,
     lastName: newUser.lastName,
     email: newUser.email,
+    password: newUser.password,
     pseudo: newUser.pseudo,
     isPro: newUser.isPro,
   });
@@ -122,16 +123,24 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-router.put("/edituser/:userId", async (req, res) => {
+router.put("/edituser/:userId",authMiddleware.authenticateJWT, async (req, res) => {
   const data = req.body;
+  
+  
   const userUpdate = await userController.updateUserById(
-    req.params.userId,
+    req.user.userID,
     data
   );
+  console.log("TCL: userUpdate ROUTES", userUpdate)
+
+  
+  // console.log("TCL: userUpdate userROUTES", userUpdate)
+
   res.status(200).json({ project: userUpdate });
+ 
 });
 
-router.delete("/user/:userId", async (req, res) => {
+router.delete("/deleteuser/:userId",authMiddleware.authenticateJWT, async (req, res) => {
   const userFound = await userController.deleteUserById(req.params.userId);
   if (userFound) {
     res.status(200).json({
