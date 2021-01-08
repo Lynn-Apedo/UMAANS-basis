@@ -4,7 +4,7 @@ const { User, Project } = models;
 
 module.exports = {
   addUser: async (data) => {
-    const { id, firstName, lastName, email, password, pseudo, isPro } = data;
+    const { id, firstName, lastName, email, password, pseudo, isPro, isAdmin } = data;
     const bcryptHash = await bcrypt.hash(password, 5);
     console.log("🚀 ~ file: userController.js ~ line 9 ~ addUser: ~ bcryptHash", bcryptHash)
     if (bcryptHash) {
@@ -16,6 +16,7 @@ module.exports = {
         password: bcryptHash,
         pseudo,
         isPro,
+        isAdmin,
       });
     }
   },

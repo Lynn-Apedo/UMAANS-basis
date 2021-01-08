@@ -75,6 +75,7 @@ router.post("/signup", async (req, res) => {
     password: newUser.password,
     pseudo: newUser.pseudo,
     isPro: newUser.isPro,
+    isAdmin: newUser.isAdmin,
   });
 });
 

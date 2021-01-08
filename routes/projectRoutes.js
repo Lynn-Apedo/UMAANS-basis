@@ -98,7 +98,7 @@ router.post("/addproject", authMiddleware.authenticateJWT, upload, async (req, r
     req.body.mainPicture == ""
   ) {
     req.body.mainPicture = req.body.mainPicture =
-      "http://localhost:2088/static/neo.png";
+      "http://localhost:2088/static/tertert.JPG";
   }
   const newProject = await projectController.addProject(
     // projectAdded,
@@ -128,7 +128,6 @@ router.delete("/projects/:projectId", async (req, res) => {
     req.params.projectId
   );
   if (project) {
-    console.log("madre de dio");
     res.status(200).json({
       message: "Projet supprimé",
     });

@@ -5,12 +5,14 @@ const bodyParser = require("body-parser");
 const router = express.Router();
 const usersRoutes = require("./userRoutes");
 const projectRoutes = require("./projectRoutes");
+const eventRoutes = require("./eventRoutes");
 const bookmarkRoutes = require("./bookmarkRoutes");
 const NotFoundError = require("../utils/errors/not_found_404_error");
 
 router.use(usersRoutes);
 router.use(projectRoutes);
 router.use(bookmarkRoutes);
+router.use(eventRoutes);
 
 router.get("/", (req, res) => {
   res.status(200).json({ message: "Let's start again toward a better future" });

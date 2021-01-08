@@ -11,7 +11,9 @@ module.exports = {
       {
         userID: userData.id,
         userRole: userData.isPro,
+        userAdmin: userData.isAdmin,
       },
+    
       JWT_SIGN_SECRET,
       {
         expiresIn: "10h",
@@ -20,7 +22,7 @@ module.exports = {
   },
   authenticateJWT: (req, res, next) => {
     const authHeader = req.headers.authorization;
-
+    
     if (authHeader) {
       const token = authHeader.split(" ")[1];
       jwt.verify(token, JWT_SIGN_SECRET, (err, user) => {

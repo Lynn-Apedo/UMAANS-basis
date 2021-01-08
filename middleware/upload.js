@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     if (file == null || file == undefined || file == "") {
-      req.body.mainPicture = "http://localhost:2088/static/neo.png";
+      req.body.mainPicture = "http://localhost:2088/static/tertert.JPG";
       callback(null, "upload");
     }
     const [name] = file.originalname

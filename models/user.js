@@ -6,6 +6,9 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Project, {
         foreignKey: "userId",
       });
+      this.hasMany(models.Event, {
+        foreignKey: "userId",
+      });
     }
   }
   User.init(
@@ -16,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       pseudo: DataTypes.STRING,
       isPro: DataTypes.BOOLEAN,
+      isAdmin: DataTypes.BOOLEAN,
     },
     {
       sequelize,
